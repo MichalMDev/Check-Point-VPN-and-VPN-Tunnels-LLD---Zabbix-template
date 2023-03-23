@@ -10,4 +10,4 @@ chown zabbix:zabbix cp_vpn_list.json cp_vpn_list.sh
 
 chmod +x cp_vpn_list.sh cp_vpn_list.json
 
-Then import the template to zabbix server. Fill te json file, and link template to the host.
+Then import the template to zabbix server. Fill the json file, and link template to the host.
