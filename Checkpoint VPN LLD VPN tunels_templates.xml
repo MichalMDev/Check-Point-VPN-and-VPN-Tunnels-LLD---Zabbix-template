@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zabbix_export>
+    <version>6.0</version>
+    <date>2023-03-24T12:12:27Z</date>
+    <groups>
+        <group>
+            <uuid>7df96b18c230490a9a0a9e2307226338</uuid>
+            <name>Templates</name>
+        </group>
+    </groups>
+    <templates>
+        <template>
+            <uuid>d94267f30da64ec8accef01306fb5cbe</uuid>
+            <template>Checkpoint VPN LLD VPN tunels</template>
+            <name>Checkpoint VPN LLD VPN tunels</name>
+            <description>Check /usr/lib/zabbix/externalscripts and edit cp_vpn_list.json
+
+Descrip[tion from: template_checkpoint_vpn-1 
+## Overview
+
+Use this template to monitor Checkpoint firewalls VPN activity.
+
+
+ 
+****
+
+
+ 
+
+
+The following value map must be created for the Checkpoint templates collection :
+
+
+ 
+
+
+&quot;Checkpoint standard status&quot;
+
+
+ 
+
+
+0 ⇒ OK
+
+
+ 
+
+
+1 ⇒ Warning
+
+
+ 
+
+
+2 ⇒ Error
+
+
+ 
+
+
+The advsnmp.discovery external script (https://github.com/simonkowallik/Zabbix-Addons/tree/master/advsnmp.discovery) is also needed by most templates.
+
+
+Last, the SNMP items reference the CHECKPOINT-MIB (chkpnt.mib, see https://supportcenter.checkpoint.com/supportcenter/portal?eventSubmit\_doGoviewsolutiondetails=&amp;solutionid=sk90470#Check Point SNMP MIB files for all products) so it must be properly installed on your Zabbix server.</description>
+            <groups>
+                <group>
+                    <name>Templates</name>
+                </group>
+            </groups>
+            <items>
+                <item>
+                    <uuid>ec807fe2ddb7411ca6279fc65948f37f</uuid>
+                    <name>Current Inbound IPSec SAs</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>CHECKPOINT-MIB::cpvCurrEspSAsIn.0</snmp_oid>
+                    <key>cpvCurrEspSAsIn</key>
+                    <delay>120</delay>
+                    <tags>
+                        <tag>
+                            <tag>Application</tag>
+                            <value>Checkpoint VPN-1</value>
+                        </tag>
+                    </tags>
+                </item>
+                <item>
+                    <uuid>43be1abc34e3499d8e73137d56775823</uuid>
+                    <name>Current Outbound IPSec SAs</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>CHECKPOINT-MIB::cpvCurrEspSAsOut.0</snmp_oid>
+                    <key>cpvCurrEspSAsOut</key>
+                    <delay>120</delay>
+                    <tags>
+                        <tag>
+                            <tag>Application</tag>
+                            <value>Checkpoint VPN-1</value>
+                        </tag>
+                    </tags>
+                </item>
+                <item>
+                    <uuid>b3b13140eb2f4ddabd1e93834ddbabda</uuid>
+                    <name>VPN Decrypted Packets/s</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>CHECKPOINT-MIB::cpvDecPackets.0</snmp_oid>
+                    <key>cpvDecPackets</key>
+                    <delay>120</delay>
+                    <value_type>FLOAT</value_type>
+                    <units>pps</units>
+                    <preprocessing>
+                        <step>
+                            <type>CHANGE_PER_SECOND</type>
+                            <parameters>
+                                <parameter/>
+                            </parameters>
+                        </step>
+                    </preprocessing>
+                    <tags>
+                        <tag>
+                            <tag>Application</tag>
+                            <value>Checkpoint VPN-1</value>
+                        </tag>
+                    </tags>
+                </item>
+                <item>
+                    <uuid>17fbf2f2cdad48d0bbcbdcd329c45b14</uuid>
+                    <name>VPN Encrypted Packets/s</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>CHECKPOINT-MIB::cpvEncPackets.0</snmp_oid>
+                    <key>cpvEncPackets</key>
+                    <delay>120</delay>
+                    <value_type>FLOAT</value_type>
+                    <units>pps</units>
+                    <preprocessing>
+                        <step>
+                            <type>CHANGE_PER_SECOND</type>
+                            <parameters>
+                                <parameter/>
+                            </parameters>
+                        </step>
+                    </preprocessing>
+                    <tags>
+                        <tag>
+                            <tag>Application</tag>
+                            <value>Checkpoint VPN-1</value>
+                        </tag>
+                    </tags>
+                </item>
+                <item>
+                    <uuid>b3d05d43942a48c589834019781fa52d</uuid>
+                    <name>Current IKE SAs</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>CHECKPOINT-MIB::cpvIKECurrSAs.0</snmp_oid>
+                    <key>cpvIKECurrSAs</key>
+                    <delay>120</delay>
+                    <tags>
+                        <tag>
+                            <tag>Application</tag>
+                            <value>Checkpoint VPN-1</value>
+                        </tag>
+                    </tags>
+                </item>
+            </items>
+            <discovery_rules>
+                <discovery_rule>
+                    <uuid>be61e66c3b774520913e3f9a278e379b</uuid>
+                    <name>VPN tunnels discovery</name>
+                    <type>EXTERNAL</type>
+                    <key>cp_vpn_list.sh[&quot;cp_vpn_list.json&quot;]</key>
+                    <delay>30m</delay>
+                    <item_prototypes>
+                        <item_prototype>
+                            <uuid>2008b42ca0264a648550fac9c10a27bf</uuid>
+                            <name>VPN Tunnel Status for {#NAME} - {#IP}</name>
+                            <type>SNMP_AGENT</type>
+                            <snmp_oid>.1.3.6.1.4.1.2620.500.9002.1.3.{#IP}.0</snmp_oid>
+                            <key>vpnTunnelStatus[{#NAME}]</key>
+                            <delay>3m</delay>
+                            <history>60d</history>
+                            <valuemap>
+                                <name>SG-VPN Status</name>
+                            </valuemap>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <uuid>6f15ee2dd41b49b29d9191da179c8882</uuid>
+                                    <expression>last(/Checkpoint VPN LLD VPN tunels/vpnTunnelStatus[{#NAME}])=131</expression>
+                                    <name>VPN Tunnel Status [{#NAME}] - down</name>
+                                    <priority>HIGH</priority>
+                                </trigger_prototype>
+                                <trigger_prototype>
+                                    <uuid>6c1bbe7906344db683cad94c66cf0009</uuid>
+                                    <expression>last(/Checkpoint VPN LLD VPN tunels/vpnTunnelStatus[{#NAME}])&gt;=130</expression>
+                                    <name>VPN Tunnel Status [{#NAME}] - init, phase1</name>
+                                    <priority>INFO</priority>
+                                </trigger_prototype>
+                            </trigger_prototypes>
+                        </item_prototype>
+                    </item_prototypes>
+                    <graph_prototypes>
+                        <graph_prototype>
+                            <uuid>84ae008c60c742c3a26b8141101244e7</uuid>
+                            <name>VPN Tunnel Status for {#NAME}</name>
+                            <graph_items>
+                                <graph_item>
+                                    <color>1A7C11</color>
+                                    <calc_fnc>ALL</calc_fnc>
+                                    <item>
+                                        <host>Checkpoint VPN LLD VPN tunels</host>
+                                        <key>vpnTunnelStatus[{#NAME}]</key>
+                                    </item>
+                                </graph_item>
+                            </graph_items>
+                        </graph_prototype>
+                    </graph_prototypes>
+                    <lld_macro_paths>
+                        <lld_macro_path>
+                            <lld_macro>{#IP}</lld_macro>
+                            <path>$.ip</path>
+                        </lld_macro_path>
+                        <lld_macro_path>
+                            <lld_macro>{#NAME}</lld_macro>
+                            <path>$.name</path>
+                        </lld_macro_path>
+                    </lld_macro_paths>
+                </discovery_rule>
+            </discovery_rules>
+            <valuemaps>
+                <valuemap>
+                    <uuid>3fe795778148453f8be5321f9400ba8f</uuid>
+                    <name>Checkpoint standard status</name>
+                    <mappings>
+                        <mapping>
+                            <value>0</value>
+                            <newvalue>OK</newvalue>
+                        </mapping>
+                        <mapping>
+                            <value>1</value>
+                            <newvalue>Warning</newvalue>
+                        </mapping>
+                        <mapping>
+                            <value>2</value>
+                            <newvalue>Error</newvalue>
+                        </mapping>
+                    </mappings>
+                </valuemap>
+                <valuemap>
+                    <uuid>8466e1de9e8a4b9b8527f99050893267</uuid>
+                    <name>SG-VPN Status</name>
+                    <mappings>
+                        <mapping>
+                            <value>3</value>
+                            <newvalue>active</newvalue>
+                        </mapping>
+                        <mapping>
+                            <value>4</value>
+                            <newvalue>destroy</newvalue>
+                        </mapping>
+                        <mapping>
+                            <value>129</value>
+                            <newvalue>idle</newvalue>
+                        </mapping>
+                        <mapping>
+                            <value>130</value>
+                            <newvalue>phase1</newvalue>
+                        </mapping>
+                        <mapping>
+                            <value>131</value>
+                            <newvalue>down</newvalue>
+                        </mapping>
+                        <mapping>
+                            <value>132</value>
+                            <newvalue>init</newvalue>
+                        </mapping>
+                    </mappings>
+                </valuemap>
+            </valuemaps>
+        </template>
+    </templates>
+    <graphs>
+        <graph>
+            <uuid>12c7b24f968d4b31a22e7ac1f5d19c5e</uuid>
+            <name>VPN-1 Activity</name>
+            <ymin_type_1>FIXED</ymin_type_1>
+            <graph_items>
+                <graph_item>
+                    <drawtype>GRADIENT_LINE</drawtype>
+                    <color>666666</color>
+                    <item>
+                        <host>Checkpoint VPN LLD VPN tunels</host>
+                        <key>cpvIKECurrSAs</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>1</sortorder>
+                    <drawtype>BOLD_LINE</drawtype>
+                    <color>00C800</color>
+                    <item>
+                        <host>Checkpoint VPN LLD VPN tunels</host>
+                        <key>cpvCurrEspSAsIn</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>2</sortorder>
+                    <drawtype>BOLD_LINE</drawtype>
+                    <color>FF3333</color>
+                    <item>
+                        <host>Checkpoint VPN LLD VPN tunels</host>
+                        <key>cpvCurrEspSAsOut</key>
+                    </item>
+                </graph_item>
+            </graph_items>
+        </graph>
+        <graph>
+            <uuid>8e65a74736d04097b4cb0d17b1ef5883</uuid>
+            <name>VPN-1 Traffic</name>
+            <ymin_type_1>FIXED</ymin_type_1>
+            <graph_items>
+                <graph_item>
+                    <drawtype>GRADIENT_LINE</drawtype>
+                    <color>00BB00</color>
+                    <yaxisside>RIGHT</yaxisside>
+                    <item>
+                        <host>Checkpoint VPN LLD VPN tunels</host>
+                        <key>cpvDecPackets</key>
+                    </item>
+                </graph_item>
+                <graph_item>
+                    <sortorder>1</sortorder>
+                    <drawtype>BOLD_LINE</drawtype>
+                    <color>FF3333</color>
+                    <yaxisside>RIGHT</yaxisside>
+                    <item>
+                        <host>Checkpoint VPN LLD VPN tunels</host>
+                        <key>cpvEncPackets</key>
+                    </item>
+                </graph_item>
+            </graph_items>
+        </graph>
+    </graphs>
+</zabbix_export>
